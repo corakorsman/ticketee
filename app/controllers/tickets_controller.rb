@@ -19,7 +19,15 @@ class TicketsController < ApplicationController
       render :action => "new"
     end
   end
-  
+
+# Hey lieffie,
+# Het is een kwestie van volgorde. Als je eenmaal hebt gezegd "private" 
+# is elke methode die je daaronder schrijft binnen dezelfde class ook private,
+# totdat je weer iets anders zegt zoals bijvoorbeeld 'public' of 'protected'
+# de oplossing is dus om de echte acties die je beschikbaar wilt hebben (zoals
+# 'show', 'edit' en 'update') *boven* de private neer te zetten, terwijl dingen als
+# find_project en dergelijke nog steeds *onder* de private staan.
+
 #  private
     def find_project
       @project = Project.find(params[:project_id])

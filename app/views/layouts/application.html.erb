@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>
-    <% if content_for?(:title) %>
-      <%= yield(:title) %>
-    <% else %>
-      Ticketee
+  <head>
+    <title>
+      <% if content_for?(:title) %>
+        <%= yield(:title) %>
+      <% else %>
+        Ticketee
+      <% end %>
+    </title>
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+
+  <% flash.each do |key, value| %>
+
+    <div class=' flash' id='<%= key %>'>
+	  <%= value %>
+    </div>
     <% end %>
-  </title>
-  <%= stylesheet_link_tag    "application" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-
-<% flash.each do |key, value| %>
-
-  <div class=' flash' id='<%= key %>'>
-	<%= value %>
-  </div>
-  <% end %>
   
-<h1><%= link_to "Ticketee", root_path %></h1>
-<%= yield %>
+  <h1><%= link_to "Ticketee", root_path %></h1>
+  <%= yield %>
 
-</body>
+
+  <nav>
+    <%= link_to "Sign up", new_user_registration_path %>
+  </nav>
+  </body>
 </html>
