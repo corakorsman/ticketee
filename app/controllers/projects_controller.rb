@@ -1,4 +1,6 @@
 class ProjectsController < ApplicationController
+  before_filter :authorize_admin!, :except => [:index,
+                                               :show]
   before_filter :find_object, :only => [:show,
                                         :edit,
                                         :update,
