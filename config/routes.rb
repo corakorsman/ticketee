@@ -66,6 +66,7 @@ Ticketee::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
   namespace :admin do
+    root :to => "base#index"
     resources :users 
   end
 end
