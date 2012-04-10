@@ -7,11 +7,14 @@ Feature: Viewing tickets
     Given there are the following users:
       |email              |password |
       |user@ticketee.com  |password |
+    And I am signed in as them
     And there is a project called "TextMate 2"
+    And "user@ticketee.com" can view the "TextMate 2" project
     And "user@ticketee.com" has created a ticket for this project:
       |title          |description                   |
       |Make it shiny! |Gradients! Starbursts! Oh my! |
     And there is a project called "Internet Explorer"
+    And "user@ticketee.com" can view the "Internet Explorer" project
     And "user@ticketee.com" has created a ticket for this project:
       |title                |description   |
       |Standards compliance |Isn't a joke. |
