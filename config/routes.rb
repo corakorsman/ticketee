@@ -1,13 +1,24 @@
 Ticketee::Application.routes.draw do
+  
 # verwijderen zie pagina 148-Rails 3 in action
 # get "users/index"
-
-  devise_for :users
-
+  
 	root :to => "projects#index"
 	resources :projects do
-    resources :tickets
+    resources :tickets 
   end
+  
+  namespace :admin do
+    root :to => "base#index"
+    resources :users 
+  end
+  
+  
+  devise_for :users, :controllers => { :registrations => "registrations" }
+
+  get '/awaiting_confirmation',
+  :to => "users#confirmation",
+  :as => 'confirm_user'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -65,8 +76,5 @@ Ticketee::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
-  namespace :admin do
-    root :to => "base#index"
-    resources :users 
-  end
+ 
 end
