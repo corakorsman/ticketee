@@ -5,6 +5,8 @@ class TicketsController < ApplicationController
                                         :edit,
                                         :update,
                                         :destroy]
+  before_filter :authorize_create!, :only => [:new,
+                                              :create]
   
   def new
     @ticket = @project.tickets.build
@@ -21,17 +23,32 @@ class TicketsController < ApplicationController
     end
   end
 
-# Hey lieffie,
-# Het is een kwestie van volgorde. Als je eenmaal hebt gezegd "private" 
-# is elke methode die je daaronder schrijft binnen dezelfde class ook private,
-# totdat je weer iets anders zegt zoals bijvoorbeeld 'public' of 'protected'
-# de oplossing is dus om de echte acties die je beschikbaar wilt hebben (zoals
-# 'show', 'edit' en 'update') *boven* de private neer te zetten, terwijl dingen als
-# find_project en dergelijke nog steeds *onder* de private staan.
+  def show
+  end
+    
+  def edit
+  end
+    
+  def update
+    if @ticket.update_attributes(params[:ticket])
+      flash[:notice] = "Ticket has been updated."
+      redirect_to [@project, @ticket]
+    else
+      flash[:alert] = "Ticket has not been updated."
+      render :action => "edit"
+    end
+  end
+    
+  def destroy
+    @ticket.destroy
+    flash[:notice] = "Ticket has been deleted."
+    redirect_to @project
+  end
 
-#  private
+  
+  private
     def find_project
-      @project = Project.for(current_user) .find(params[:project_id])
+      @project = Project.for(current_user).find(params[:project_id])
     rescue ActiveRecord::RecordNotFound
       flash[:alert] = "The project you were looking for could not be found."
       redirect_to root_path
@@ -41,25 +58,10 @@ class TicketsController < ApplicationController
       @ticket = @project.tickets.find(params[:id])
     end
     
-    def show
-    end
-    
-    def edit
-    end
-    
-    def update
-      if @ticket.update_attributes(params[:ticket])
-        flash[:notice] = "Ticket has been updated."
-        redirect_to [@project, @ticket]
-      else
-        flash[:alert] = "Ticket has not been updated."
-        render :action => "edit"
+    def authorize_create!
+      if !current_user.admin? && cannot?("create tickets".to_sym, @project)
+        flash[:alert] = "You cannot create tickets on this project."
+        redirect_to @project
       end
-    end
-    
-    def destroy
-      @ticket.destroy
-      flash[:notice] = "Ticket has been deleted."
-      redirect_to @project
     end
 end
