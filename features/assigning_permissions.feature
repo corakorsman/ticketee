@@ -29,3 +29,43 @@ Feature: Assigning permissions
 
     Given I am signed in as "user@ticketee.com"
     Then I should see "TextMate 2"
+    
+  Scenario: Creating tickets for a project
+    When I check "View" for "TextMate 2"
+    When I check "Create tickets" for "TextMate 2"
+    And I press "Update"
+    And I follow "Sign out"
+
+    Given I am signed in as "user@ticketee.com"
+    When I follow "TextMate 2"
+    And I follow "New Ticket"
+    And I fill in "Title" with "Shiny!"
+    And I fill in "Description" with "Make it so!"
+    And I press "Create"
+    Then I should see "Ticket has been created."
+    
+  Scenario: Updating a ticket for a project
+    When I check "View" for "TextMate 2"
+    And I check "Edit tickets" for "TextMate 2"
+    And I press "Update"
+    And I follow "Sign out"
+
+    Given I am signed in as "user@ticketee.com"
+    When I follow "TextMate 2"
+    And I follow "Shiny!"
+    And I follow "Edit"
+    And I fill in "Title" with "Really shiny!"
+    And I press "Update Ticket"
+    Then I should see "Ticket has been updated"
+
+  Scenario: Deleting a ticket for a project
+    When I check "View" for "TextMate 2"
+    And I check "Delete tickets" for "TextMate 2"
+    And I press "Update"
+    And I follow "Sign out"
+
+    Given I am signed in as "user@ticketee.com"
+    When I follow "TextMate 2"
+    And I follow "Shiny!"
+    And I follow "Delete"
+    Then I should see "Ticket has been deleted."
