@@ -21,4 +21,6 @@ Ticketee::Application.routes.draw do
   put '/admin/users/:user_id/permissions',
     :to => 'admin/permissions#update',
     :as => :update_user_permissions
+    
+  resources :files
 end
